@@ -25,7 +25,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private MainActivityViewModel mainActivityViewModel;
     private ActivityMainBinding binding;
-    private ArrayList<HashMap<String,Question>> questionList = new ArrayList<>();
+//    private ArrayList<HashMap<String,Question>> questionList = new ArrayList<>();
+    private ArrayList<Question> hardFactList = new ArrayList<>();
     private ArrayList<String> categoryList;
     private RecyclerView recyclerView;
     private QuestionsAdapter adapter;
@@ -71,10 +72,11 @@ public class MainActivity extends AppCompatActivity {
 
                questionMap.put(question.getCategory(),question);
 
-               questionList.add(questionMap);
+              // questionList.add(questionMap);
 
-               if(questionMap.containsKey("hard_fact")) {
+               if(questionMap.containsKey(categoryList.get(0))) {
                    Log.i(TAG, "Size is " + questionMap.get("hard_fact").getQuestion());
+                   hardFactList.add(question);
                }
            }
 
@@ -94,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = binding.rvQuestionList;
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new QuestionsAdapter(questionList,this);
+        adapter = new QuestionsAdapter(hardFactList,this);
         recyclerView.setAdapter(adapter);
 
 

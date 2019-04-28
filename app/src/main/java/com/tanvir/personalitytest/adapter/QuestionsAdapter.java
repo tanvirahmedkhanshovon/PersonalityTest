@@ -15,39 +15,36 @@ import com.tanvir.personalitytest.model.Question;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class QuestionsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.QuestionViewHolder> {
 
-    ArrayList<HashMap<String,Question>>  questionArrayList;
+    ArrayList<Question> questionArrayList;
 
 
     private Context context;
 
-    public QuestionsAdapter(ArrayList<HashMap<String,Question>> questionArrayList, Context context) {
+    public QuestionsAdapter(ArrayList<Question> questionArrayList, Context context) {
         this.questionArrayList = questionArrayList;
         this.context = context;
     }
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public QuestionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        QuestionsItemBinding questionsItemBinding = DataBindingUtil.inflate(inflater, R.layout.questions_item, parent, false);
-
-        return new QuestionViewHolder(questionsItemBinding);
+        QuestionsItemBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),R.layout.questions_item,parent,false);
+        return new QuestionViewHolder(binding);
     }
+
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull QuestionViewHolder holder, int position) {
+        Question question = questionArrayList.get(position);
 
-        Question question = questionArrayList.get(position).get("passion");
-
-
-
-
+        holder.binding.setQuestion(question);
 
     }
+
+
 
     @Override
     public int getItemCount() {
