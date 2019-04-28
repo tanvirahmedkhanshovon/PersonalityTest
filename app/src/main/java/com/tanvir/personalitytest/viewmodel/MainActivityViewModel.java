@@ -28,4 +28,10 @@ public class MainActivityViewModel extends AndroidViewModel {
 
         return repository.getQuestionLiveData();
     }
+
+    public LiveData<List<String>> getAllCategories(){
+
+
+        return repository.getCategoriesLiveData();
+    }
 }

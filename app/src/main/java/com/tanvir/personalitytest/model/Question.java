@@ -4,10 +4,15 @@ package com.tanvir.personalitytest.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.Parcelable.Creator;
+
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.tanvir.personalitytest.BR;
 
-public class Question implements Parcelable
+public class Question extends BaseObservable implements Parcelable
 {
 
     @SerializedName("question")
@@ -46,28 +51,34 @@ public class Question implements Parcelable
     public Question() {
     }
 
+    @Bindable
     public String getQuestion() {
         return question;
     }
 
     public void setQuestion(String question) {
         this.question = question;
+        notifyPropertyChanged(BR.question);
     }
 
+    @Bindable
     public String getCategory() {
         return category;
     }
 
     public void setCategory(String category) {
         this.category = category;
+        notifyPropertyChanged(BR.category);
     }
 
+    @Bindable
     public QuestionType getQuestionType() {
         return questionType;
     }
 
     public void setQuestionType(QuestionType questionType) {
         this.questionType = questionType;
+        notifyPropertyChanged(BR.questionType);
     }
 
     public void writeToParcel(Parcel dest, int flags) {

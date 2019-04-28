@@ -5,10 +5,16 @@ import java.util.List;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.Parcelable.Creator;
+
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
+import androidx.databinding.library.baseAdapters.BR;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class QuestionType implements Parcelable
+
+public class QuestionType extends BaseObservable implements Parcelable
 {
 
     @SerializedName("type")
@@ -45,29 +51,33 @@ public class QuestionType implements Parcelable
 
     public QuestionType() {
     }
-
+    @Bindable
     public String getType() {
         return type;
     }
 
     public void setType(String type) {
         this.type = type;
+        notifyPropertyChanged(BR.type);
     }
 
+    @Bindable
     public List<String> getOptions() {
         return options;
     }
 
     public void setOptions(List<String> options) {
         this.options = options;
+        notifyPropertyChanged(BR.options);
     }
-
+    @Bindable
     public Condition getCondition() {
         return condition;
     }
 
     public void setCondition(Condition condition) {
         this.condition = condition;
+        notifyPropertyChanged(BR.condition);
     }
 
     public void writeToParcel(Parcel dest, int flags) {
