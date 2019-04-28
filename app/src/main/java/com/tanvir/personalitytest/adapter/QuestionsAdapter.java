@@ -1,7 +1,9 @@
 package com.tanvir.personalitytest.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -17,7 +19,9 @@ import java.util.HashMap;
 
 public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.QuestionViewHolder> {
 
+    private static final String TAG = "QuestionsAdapter";
     ArrayList<Question> questionArrayList;
+
 
 
     private Context context;
@@ -38,9 +42,11 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Ques
 
     @Override
     public void onBindViewHolder(@NonNull QuestionViewHolder holder, int position) {
+        RadioGroupClickHandler radioGroupClickHandler = new RadioGroupClickHandler();
         Question question = questionArrayList.get(position);
 
         holder.binding.setQuestion(question);
+        holder.binding.setRadiogroup(radioGroupClickHandler);
 
     }
 
@@ -58,5 +64,17 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Ques
             super(itemView.getRoot());
             binding = itemView;
         }
+    }
+
+   public class RadioGroupClickHandler{
+
+        public void onClickGroup(View v){
+
+
+            Log.i(TAG,"SELECTED item " + v.getId());
+        }
+
+
+
     }
 }
