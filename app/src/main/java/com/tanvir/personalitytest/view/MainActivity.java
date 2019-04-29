@@ -45,9 +45,7 @@ public class MainActivity extends AppCompatActivity {
         loadData();
 
 
-
     }
-
 
     private void loadData() {
 
@@ -89,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
                 loadRecyclerView(questionList.get(loadCount));
-                loadCount++;
                 // Log.i(TAG,"Size is "+questionList.size());
 
             }
@@ -98,13 +95,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadRecyclerView(ArrayList<Question> arrayList) {
 
-
         recyclerView = binding.rvQuestionList;
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new QuestionsAdapter(arrayList, this);
         recyclerView.setAdapter(adapter);
-
+        loadCount++;
 
     }
 
@@ -123,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
             loadRecyclerView(questionList.get(loadCount));
             adapter.notifyDataSetChanged();
-            loadCount++;
+
 
         }
         else {
