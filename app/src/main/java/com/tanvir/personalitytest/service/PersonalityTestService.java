@@ -8,7 +8,7 @@ import retrofit2.http.GET;
 
 public interface PersonalityTestService {
 
-    @GET("personalityTestForm")
+    @GET("personalitytest")
     Call<PersonalityForm> getForm();
 
 }

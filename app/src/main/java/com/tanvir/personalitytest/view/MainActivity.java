@@ -25,12 +25,10 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private MainActivityViewModel mainActivityViewModel;
-    private ActivityMainBinding binding;
     //    private ArrayList<HashMap<String,Question>> questionList = new ArrayList<>();
-    private ArrayList<Question> hardFactList = new ArrayList<>();
-    private ArrayList<Question> lifeStyleList = new ArrayList<>();
-    private ArrayList<Question> introversionList = new ArrayList<>();
-    private ArrayList<Question> passionList = new ArrayList<>();
+    private ActivityMainBinding binding;
+    private ArrayList<ArrayList<Question>> questionList ;
+    private ArrayList<Question> qList = new ArrayList<>();
     private ArrayList<String> categoryList;
     private RecyclerView recyclerView;
     private QuestionsAdapter adapter;
@@ -47,7 +45,9 @@ public class MainActivity extends AppCompatActivity {
         loadData();
 
 
+
     }
+
 
     private void loadData() {
 
@@ -58,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
 
                 categoryList = (ArrayList<String>) strings;
 
+                questionList = new ArrayList<>(categoryList.size());
+
 
             }
         });
@@ -67,37 +69,27 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<Question> questions) {
 
-
-                for (Question question : questions) {
-
-
-                    HashMap<String, Question> questionMap = new HashMap<String, Question>();
-
-                    questionMap.put(question.getCategory(), question);
-
-                    // questionList.add(questionMap);
-
-                    if (questionMap.containsKey(categoryList.get(0))) {
-                        // Log.i(TAG, "Size is " + questionMap.get("hard_fact").getQuestion());
-                        hardFactList.add(question);
-                    }
-                    if (questionMap.containsKey(categoryList.get(1))) {
-
-                        lifeStyleList.add(question);
-                    }
-                    if (questionMap.containsKey(categoryList.get(2))) {
-
-                        introversionList.add(question);
-                    }
-                    if (questionMap.containsKey(categoryList.get(3))) {
-
-                        passionList.add(question);
-                    }
-                }
+    for(int i = 0;i<categoryList.size();i++) {
+        for (Question question : questions) {
 
 
-                loadRecyclerView(hardFactList);
+            HashMap<String, Question> questionMap = new HashMap<String, Question>();
 
+            questionMap.put(question.getCategory(), question);
+
+            if (questionMap.containsKey(categoryList.get(i))) {
+                // Log.i(TAG, "Size is " + questionMap.get("hard_fact").getQuestion());
+            qList.add(question);
+
+            }
+
+        }
+        questionList.add(qList);
+        qList = new ArrayList<>();
+    }
+
+                loadRecyclerView(questionList.get(loadCount));
+                loadCount++;
                 // Log.i(TAG,"Size is "+questionList.size());
 
             }
@@ -126,22 +118,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if (loadCount == 0) {
-            loadCount++;
-            loadRecyclerView(lifeStyleList);
-            adapter.notifyDataSetChanged();
 
-        } else if (loadCount == 1) {
-            loadCount++;
-            loadRecyclerView(passionList);
-            adapter.notifyDataSetChanged();
-        } else if (loadCount == 2) {
-            loadRecyclerView(introversionList);
+        if (loadCount < categoryList.size()) {
+
+            loadRecyclerView(questionList.get(loadCount));
             adapter.notifyDataSetChanged();
             loadCount++;
+
+        }
+        else {
             item.setTitle("SAVE");
         }
-
 
         return super.onOptionsItemSelected(item);
     }

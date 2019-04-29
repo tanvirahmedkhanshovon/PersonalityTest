@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.tanvir.personalitytest.R;
 import com.tanvir.personalitytest.databinding.QuestionsItemBinding;
 import com.tanvir.personalitytest.model.Question;
+import com.tanvir.personalitytest.model.QuestionType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -78,6 +79,14 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Ques
 
 
             Log.i(TAG,"SELECTED item " + questionArrayList.get(position).getQuestionType().getOptions().get(0));
+
+
+//            for(int i = 1; i<questionArrayList.get(position).getQuestionType().getOptions().size() ;i++){
+//                questionArrayList.get(position).getQuestionType().getOptions().remove(i);
+//
+//            }
+
+
         }
        public void onOpt2Clicked(View v){
 
@@ -100,5 +109,10 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Ques
 
            Log.i(TAG,"SELECTED item " + questionArrayList.get(position).getQuestionType().getOptions().get(4));
        }
+    }
+
+    public ArrayList<Question> getQuestionArrayList() {
+
+        return questionArrayList;
     }
 }
