@@ -3,80 +3,46 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
 
         <import type="android.view.View" />
-        <variable
-            name="start"
-            type="com.tanvir.personalitytest.view.MainActivity.ClickHandler" />
-
-
     </data>
-<androidx.cardview.widget.CardView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="20dp"
-    android:elevation="3dp"
-    app:cardCornerRadius="1dp"
 
-    >
-    <RelativeLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".view.MainActivity"
-        android:layout_gravity="center">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:elevation="3dp"
+        app:cardCornerRadius="1dp"
+        >
 
-        <TextView
-            android:id="@+id/title"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:text="WELCOME TO PERSONALITY TEST"
-            android:gravity="center"
-            android:textSize="20sp"
-            android:textColor="#FFFFFF"
-            android:background="@color/colorPrimary"
-            android:layout_centerHorizontal="true"/>
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            tools:context=".view.MainActivity">
 
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/rvQuestionList"
-            android:layout_below="@id/title"/>
-
-        <androidx.core.widget.ContentLoadingProgressBar
-            android:id="@+id/progressbar"
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:backgroundTint="@color/colorPrimary"/>
-
-
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnStart"
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="8dp"
-                android:text="Start"
-                android:onClick="@{start::onStart}"
+                android:background="@color/colorPrimary"
+                android:gravity="center"
+                android:text="WELCOME TO PERSONALITY TEST"
                 android:textColor="#FFFFFF"
-                android:textStyle="bold"
-                android:layout_below="@+id/rvQuestionList"
-                android:layout_centerHorizontal="true"
-                android:backgroundTint="@color/colorAccent"
-
                 />
 
 
-    </RelativeLayout>
-</androidx.cardview.widget.CardView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvQuestionList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
 </layout>

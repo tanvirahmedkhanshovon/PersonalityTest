@@ -10,8 +10,8 @@
             name="question"
             type="com.tanvir.personalitytest.model.Question" />
         <variable
-            name="radiogroup"
-            type="com.tanvir.personalitytest.adapter.QuestionsAdapter.RadioGroupClickHandler" />
+            name="radioButton"
+            type="com.tanvir.personalitytest.adapter.QuestionsAdapter.RadioButtonClickHandler" />
 
 
     </data>
@@ -31,7 +31,7 @@
         <RadioGroup
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="@{radiogroup::onClickGroup}"
+
             >
 
              <com.google.android.material.radiobutton.MaterialRadioButton
@@ -39,6 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@{question.questionType.options.get(0)}"
+                 android:onClick="@{radioButton::onOpt1Clicked}"
                 />
 
             <com.google.android.material.radiobutton.MaterialRadioButton
@@ -46,6 +47,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@{question.questionType.options.get(1)}"
+                android:onClick="@{radioButton::onOpt2Clicked}"
               />
             <!--android:checked="@{question.questionType.options.equals(question.questionType.options.get(1))}"-->
             <com.google.android.material.radiobutton.MaterialRadioButton
@@ -53,6 +55,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@{question.questionType.options.get(2)}"
+                android:onClick="@{radioButton::onOpt3Clicked}"
               />
 
             <com.google.android.material.radiobutton.MaterialRadioButton
@@ -60,14 +63,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="@{question.questionType.options.size() == 4 ? View.VISIBLE : View.GONE}"
-                android:text="@{question.questionType.options.size() == 4 ? question.questionType.options.get(3):0}"/>
+                android:text='@{question.questionType.options.size() == 4 ? question.questionType.options.get(3):""}'
+                android:onClick="@{radioButton::onOpt4Clicked}"/>
 
             <com.google.android.material.radiobutton.MaterialRadioButton
                 android:id="@+id/opt5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="@{question.questionType.options.size() == 5 ? View.VISIBLE : View.GONE}"
-                android:text="@{question.questionType.options.size() == 5 ? question.questionType.options.get(4):0}"/>
+                android:text='@{question.questionType.options.size() == 5 ? question.questionType.options.get(4):""}'
+                android:onClick="@{radioButton::onOpt5Clicked}"/>
         </RadioGroup>
 
 
@@ -76,7 +81,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="@{question.questionType.condition!=null ? View.VISIBLE : View.GONE}"
-            android:text="@{question.questionType.condition!=null ? question.questionType.condition.ifPositive.question:0}"/>
+            android:text='@{question.questionType.condition!=null ? question.questionType.condition.ifPositive.question:" "}'/>
 
         <LinearLayout
             android:id="@+id/rangecontent"

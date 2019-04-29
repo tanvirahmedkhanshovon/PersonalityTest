@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -20,7 +21,8 @@ import java.util.HashMap;
 public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.QuestionViewHolder> {
 
     private static final String TAG = "QuestionsAdapter";
-    ArrayList<Question> questionArrayList;
+    private ArrayList<Question> questionArrayList;
+
 
 
 
@@ -42,12 +44,11 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Ques
 
     @Override
     public void onBindViewHolder(@NonNull QuestionViewHolder holder, int position) {
-        RadioGroupClickHandler radioGroupClickHandler = new RadioGroupClickHandler();
+        RadioButtonClickHandler radioButtonClickHandler = new RadioButtonClickHandler(position);
         Question question = questionArrayList.get(position);
 
         holder.binding.setQuestion(question);
-        holder.binding.setRadiogroup(radioGroupClickHandler);
-
+        holder.binding.setRadioButton(radioButtonClickHandler);
     }
 
 
@@ -66,15 +67,38 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Ques
         }
     }
 
-   public class RadioGroupClickHandler{
+   public class RadioButtonClickHandler{
+        private int position;
 
-        public void onClickGroup(View v){
+       public RadioButtonClickHandler(int position) {
+           this.position = position;
+       }
+
+       public void onOpt1Clicked(View v){
 
 
-            Log.i(TAG,"SELECTED item " + v.getId());
+            Log.i(TAG,"SELECTED item " + questionArrayList.get(position).getQuestionType().getOptions().get(0));
         }
+       public void onOpt2Clicked(View v){
 
 
+           Log.i(TAG,"SELECTED item " + questionArrayList.get(position).getQuestionType().getOptions().get(1));
+       }
 
+       public void onOpt3Clicked(View v){
+
+
+           Log.i(TAG,"SELECTED item " + questionArrayList.get(position).getQuestionType().getOptions().get(2));
+       }
+       public void onOpt4Clicked(View v){
+
+
+           Log.i(TAG,"SELECTED item " + questionArrayList.get(position).getQuestionType().getOptions().get(3));
+       }
+       public void onOpt5Clicked(View v){
+
+
+           Log.i(TAG,"SELECTED item " + questionArrayList.get(position).getQuestionType().getOptions().get(4));
+       }
     }
 }
