@@ -11,15 +11,20 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.tanvir.personalitytest.R;
 import com.tanvir.personalitytest.adapter.QuestionsAdapter;
 import com.tanvir.personalitytest.databinding.ActivityMainBinding;
+import com.tanvir.personalitytest.model.Answers;
 import com.tanvir.personalitytest.model.Question;
 import com.tanvir.personalitytest.viewmodel.MainActivityViewModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -28,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     //    private ArrayList<HashMap<String,Question>> questionList = new ArrayList<>();
     private ActivityMainBinding binding;
     private ArrayList<ArrayList<Question>> questionList ;
+    private ArrayList<ArrayList<Answers>> answerLists ;
     private ArrayList<Question> qList = new ArrayList<>();
     private ArrayList<String> categoryList;
     private RecyclerView recyclerView;
@@ -57,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
                 categoryList = (ArrayList<String>) strings;
 
                 questionList = new ArrayList<>(categoryList.size());
+
+                answerLists = new ArrayList<>(categoryList.size());
 
 
             }
@@ -96,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
     private void loadRecyclerView(ArrayList<Question> arrayList) {
 
         recyclerView = binding.rvQuestionList;
-
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new QuestionsAdapter(arrayList, this);
         recyclerView.setAdapter(adapter);
@@ -116,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         if (loadCount < categoryList.size()) {
-
+            answerLists.add(QuestionsAdapter.answerList);
             loadRecyclerView(questionList.get(loadCount));
             adapter.notifyDataSetChanged();
 

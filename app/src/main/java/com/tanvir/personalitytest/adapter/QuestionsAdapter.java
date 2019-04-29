@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.tanvir.personalitytest.R;
 import com.tanvir.personalitytest.databinding.QuestionsItemBinding;
+import com.tanvir.personalitytest.model.Answers;
 import com.tanvir.personalitytest.model.Question;
 import com.tanvir.personalitytest.model.QuestionType;
 
@@ -23,6 +24,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Ques
 
     private static final String TAG = "QuestionsAdapter";
     private ArrayList<Question> questionArrayList;
+    public static ArrayList<Answers> answerList = new ArrayList<>();
 
 
 
@@ -70,44 +72,44 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Ques
 
    public class RadioButtonClickHandler{
         private int position;
-
+        private String question;
+        private String answer;
        public RadioButtonClickHandler(int position) {
            this.position = position;
+
+           question = questionArrayList.get(position).getQuestion();
        }
 
        public void onOpt1Clicked(View v){
+      answer = questionArrayList.get(position).getQuestionType().getOptions().get(0);
 
-
-            Log.i(TAG,"SELECTED item " + questionArrayList.get(position).getQuestionType().getOptions().get(0));
-
-
-//            for(int i = 1; i<questionArrayList.get(position).getQuestionType().getOptions().size() ;i++){
-//                questionArrayList.get(position).getQuestionType().getOptions().remove(i);
-//
-//            }
+           answerList.add(new Answers(question,answer));
 
 
         }
        public void onOpt2Clicked(View v){
 
+           answer = questionArrayList.get(position).getQuestionType().getOptions().get(1);
 
-           Log.i(TAG,"SELECTED item " + questionArrayList.get(position).getQuestionType().getOptions().get(1));
+           answerList.add(new Answers(question,answer));
+
        }
 
        public void onOpt3Clicked(View v){
 
+           answer = questionArrayList.get(position).getQuestionType().getOptions().get(2);
 
-           Log.i(TAG,"SELECTED item " + questionArrayList.get(position).getQuestionType().getOptions().get(2));
+           answerList.add(new Answers(question,answer));
        }
        public void onOpt4Clicked(View v){
+           answer = questionArrayList.get(position).getQuestionType().getOptions().get(4);
 
-
-           Log.i(TAG,"SELECTED item " + questionArrayList.get(position).getQuestionType().getOptions().get(3));
+           answerList.add(new Answers(question,answer));
        }
        public void onOpt5Clicked(View v){
+           answer = questionArrayList.get(position).getQuestionType().getOptions().get(5);
 
-
-           Log.i(TAG,"SELECTED item " + questionArrayList.get(position).getQuestionType().getOptions().get(4));
+           answerList.add(new Answers(question,answer));
        }
     }
 

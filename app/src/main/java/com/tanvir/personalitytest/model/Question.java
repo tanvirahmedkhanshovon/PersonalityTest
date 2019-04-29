@@ -18,6 +18,8 @@ public class Question extends BaseObservable implements Parcelable
     @SerializedName("question")
     @Expose
     private String question;
+    @Expose(serialize = false,deserialize = false)
+    private String answer;
     @SerializedName("category")
     @Expose
     private String category;
@@ -90,5 +92,6 @@ public class Question extends BaseObservable implements Parcelable
     public int describeContents() {
         return  0;
     }
+
 
 }

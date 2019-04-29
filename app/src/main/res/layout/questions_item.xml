@@ -31,6 +31,7 @@
         <RadioGroup
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:checkedButton="@id/opt1"
 
             >
 
@@ -40,6 +41,7 @@
                 android:layout_height="wrap_content"
                 android:text="@{question.questionType.options.get(0)}"
                  android:onClick="@{radioButton::onOpt1Clicked}"
+
                 />
 
             <com.google.android.material.radiobutton.MaterialRadioButton
@@ -48,6 +50,7 @@
                 android:layout_height="wrap_content"
                 android:text="@{question.questionType.options.get(1)}"
                 android:onClick="@{radioButton::onOpt2Clicked}"
+
               />
             <!--android:checked="@{question.questionType.options.equals(question.questionType.options.get(1))}"-->
             <com.google.android.material.radiobutton.MaterialRadioButton
@@ -64,7 +67,8 @@
                 android:layout_height="wrap_content"
                 android:visibility="@{question.questionType.options.size() == 4 ? View.VISIBLE : View.GONE}"
                 android:text='@{question.questionType.options.size() == 4 ? question.questionType.options.get(3):""}'
-                android:onClick="@{radioButton::onOpt4Clicked}"/>
+                android:onClick="@{radioButton::onOpt4Clicked}"
+                />
 
             <com.google.android.material.radiobutton.MaterialRadioButton
                 android:id="@+id/opt5"
@@ -89,7 +93,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:orientation="horizontal"
-            android:visibility="@{question.questionType.condition!=null ? View.VISIBLE : View.GONE}">
+            android:visibility="@{question.questionType.condition!=null ? View.VISIBLE : View.GONE}"
+
+            >
 
             <TextView
                 android:layout_width="wrap_content"
