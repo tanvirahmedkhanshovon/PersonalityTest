@@ -3,7 +3,6 @@ package com.tanvir.personalitytest.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.os.Parcelable.Creator;
 
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
@@ -17,7 +16,7 @@ public class Range extends BaseObservable implements Parcelable
 
     @SerializedName("from")
     @Expose
-    private Integer from;
+    private int from;
     @SerializedName("to")
     @Expose
     private Integer to;
@@ -47,11 +46,11 @@ public class Range extends BaseObservable implements Parcelable
     }
 
     @Bindable
-    public Integer getFrom() {
+    public int getFrom() {
         return from;
     }
 
-    public void setFrom(Integer from) {
+    public void setFrom(int from) {
         this.from = from;
         notifyPropertyChanged(BR.from);
     }

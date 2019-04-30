@@ -4,10 +4,13 @@ package com.tanvir.personalitytest.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.Parcelable.Creator;
+
+import androidx.databinding.BaseObservable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class IfPositive implements Parcelable
+public class IfPositive extends BaseObservable implements Parcelable
 {
 
     @SerializedName("question")

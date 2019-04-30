@@ -9,7 +9,7 @@ public class RetrofitInstance {
 
     private static Retrofit retrofit = null;
 
-    private static String BASE_URL = "https://personality.free.beeceptor.com/";
+    private static String BASE_URL = "https://testmenow.free.beeceptor.com/";
 
     public static PersonalityTestService getService() {
 

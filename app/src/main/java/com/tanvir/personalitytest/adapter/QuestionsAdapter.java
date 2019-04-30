@@ -1,11 +1,10 @@
 package com.tanvir.personalitytest.adapter;
 
 import android.content.Context;
-import android.util.Log;
+import android.icu.lang.UCharacter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioButton;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -15,20 +14,15 @@ import com.tanvir.personalitytest.R;
 import com.tanvir.personalitytest.databinding.QuestionsItemBinding;
 import com.tanvir.personalitytest.model.Answers;
 import com.tanvir.personalitytest.model.Question;
-import com.tanvir.personalitytest.model.QuestionType;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+
 
 public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.QuestionViewHolder> {
 
     private static final String TAG = "QuestionsAdapter";
-    private ArrayList<Question> questionArrayList;
     public static ArrayList<Answers> answerList = new ArrayList<>();
-
-
-
-
+    private ArrayList<Question> questionArrayList;
     private Context context;
 
     public QuestionsAdapter(ArrayList<Question> questionArrayList, Context context) {
@@ -40,7 +34,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Ques
     @Override
     public QuestionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        QuestionsItemBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),R.layout.questions_item,parent,false);
+        QuestionsItemBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.questions_item, parent, false);
         return new QuestionViewHolder(binding);
     }
 
@@ -49,16 +43,19 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Ques
     public void onBindViewHolder(@NonNull QuestionViewHolder holder, int position) {
         RadioButtonClickHandler radioButtonClickHandler = new RadioButtonClickHandler(position);
         Question question = questionArrayList.get(position);
-
         holder.binding.setQuestion(question);
         holder.binding.setRadioButton(radioButtonClickHandler);
     }
 
 
-
     @Override
     public int getItemCount() {
         return questionArrayList != null ? questionArrayList.size() : 0;
+    }
+
+    public ArrayList<Question> getQuestionArrayList() {
+
+        return questionArrayList;
     }
 
     class QuestionViewHolder extends RecyclerView.ViewHolder {
@@ -67,54 +64,72 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Ques
         public QuestionViewHolder(@NonNull QuestionsItemBinding itemView) {
             super(itemView.getRoot());
             binding = itemView;
+//            if(binding.rg.getCheckedRadioButtonId()!=R.id.opt3){
+//                if(questionArrayList.get(getAdapterPosition()).getQuestionType().getCondition()!=null) {
+//
+//                    binding.subquestionTitle.setVisibility(View.VISIBLE);
+//                    binding.rangecontent.setVisibility(View.VISIBLE);
+//
+//                }
+//                else {
+//
+//                    binding.subquestionTitle.setVisibility(View.GONE);
+//                    binding.rangecontent.setVisibility(View.GONE);
+//
+//                }
+//            }
+
         }
     }
 
-   public class RadioButtonClickHandler{
+    public class RadioButtonClickHandler {
         private int position;
         private String question;
         private String answer;
-       public RadioButtonClickHandler(int position) {
-           this.position = position;
 
-           question = questionArrayList.get(position).getQuestion();
-       }
 
-       public void onOpt1Clicked(View v){
-      answer = questionArrayList.get(position).getQuestionType().getOptions().get(0);
+        public RadioButtonClickHandler(int position) {
+            this.position = position;
 
-           answerList.add(new Answers(question,answer));
+            question = questionArrayList.get(position).getQuestion();
+        }
+
+        public void onOpt1Clicked(View v) {
+            answer = questionArrayList.get(position).getQuestionType().getOptions().get(0);
+
+            answerList.add(new Answers(question, answer));
 
 
         }
-       public void onOpt2Clicked(View v){
 
-           answer = questionArrayList.get(position).getQuestionType().getOptions().get(1);
+        public void onOpt2Clicked(View v) {
 
-           answerList.add(new Answers(question,answer));
+            answer = questionArrayList.get(position).getQuestionType().getOptions().get(1);
 
-       }
+            answerList.add(new Answers(question, answer));
 
-       public void onOpt3Clicked(View v){
+        }
 
-           answer = questionArrayList.get(position).getQuestionType().getOptions().get(2);
+        public void onOpt3Clicked(View v) {
 
-           answerList.add(new Answers(question,answer));
-       }
-       public void onOpt4Clicked(View v){
-           answer = questionArrayList.get(position).getQuestionType().getOptions().get(4);
+            answer = questionArrayList.get(position).getQuestionType().getOptions().get(2);
 
-           answerList.add(new Answers(question,answer));
-       }
-       public void onOpt5Clicked(View v){
-           answer = questionArrayList.get(position).getQuestionType().getOptions().get(5);
+            answerList.add(new Answers(question, answer));
 
-           answerList.add(new Answers(question,answer));
-       }
+        }
+
+        public void onOpt4Clicked(View v) {
+            answer = questionArrayList.get(position).getQuestionType().getOptions().get(3);
+
+            answerList.add(new Answers(question, answer));
+        }
+
+        public void onOpt5Clicked(View v) {
+            answer = questionArrayList.get(position).getQuestionType().getOptions().get(4);
+
+            answerList.add(new Answers(question, answer));
+        }
     }
 
-    public ArrayList<Question> getQuestionArrayList() {
 
-        return questionArrayList;
-    }
 }

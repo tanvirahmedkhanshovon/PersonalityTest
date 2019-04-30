@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-        <import type="android.view.View" />
 
+        <import type="android.view.View" />
         <variable
             name="question"
             type="com.tanvir.personalitytest.model.Question" />
+
+
         <variable
             name="radioButton"
             type="com.tanvir.personalitytest.adapter.QuestionsAdapter.RadioButtonClickHandler" />
+
 
 
     </data>
@@ -31,16 +32,17 @@
         <RadioGroup
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/rg"
             android:checkedButton="@id/opt1"
 
             >
 
-             <com.google.android.material.radiobutton.MaterialRadioButton
+            <com.google.android.material.radiobutton.MaterialRadioButton
                 android:id="@+id/opt1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="@{radioButton::onOpt1Clicked}"
                 android:text="@{question.questionType.options.get(0)}"
-                 android:onClick="@{radioButton::onOpt1Clicked}"
 
                 />
 
@@ -48,35 +50,33 @@
                 android:id="@+id/opt2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{question.questionType.options.get(1)}"
                 android:onClick="@{radioButton::onOpt2Clicked}"
+                android:text="@{question.questionType.options.get(1)}"
 
-              />
+                />
             <!--android:checked="@{question.questionType.options.equals(question.questionType.options.get(1))}"-->
             <com.google.android.material.radiobutton.MaterialRadioButton
                 android:id="@+id/opt3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{question.questionType.options.get(2)}"
                 android:onClick="@{radioButton::onOpt3Clicked}"
-              />
+                android:text="@{question.questionType.options.get(2)}" />
 
             <com.google.android.material.radiobutton.MaterialRadioButton
                 android:id="@+id/opt4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="@{question.questionType.options.size() == 4 ? View.VISIBLE : View.GONE}"
-                android:text='@{question.questionType.options.size() == 4 ? question.questionType.options.get(3):""}'
                 android:onClick="@{radioButton::onOpt4Clicked}"
-                />
+                android:text='@{question.questionType.options.size() == 4 ? question.questionType.options.get(3):""}'
+                android:visibility="@{question.questionType.options.size() == 4 ? View.VISIBLE : View.GONE}" />
 
             <com.google.android.material.radiobutton.MaterialRadioButton
                 android:id="@+id/opt5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="@{question.questionType.options.size() == 5 ? View.VISIBLE : View.GONE}"
+                android:onClick="@{radioButton::onOpt5Clicked}"
                 android:text='@{question.questionType.options.size() == 5 ? question.questionType.options.get(4):""}'
-                android:onClick="@{radioButton::onOpt5Clicked}"/>
+                android:visibility="@{question.questionType.options.size() == 5 ? View.VISIBLE : View.GONE}" />
         </RadioGroup>
 
 
@@ -84,25 +84,27 @@
             android:id="@+id/subquestionTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="@{question.questionType.condition!=null ? View.VISIBLE : View.GONE}"
-            android:text='@{question.questionType.condition!=null ? question.questionType.condition.ifPositive.question:" "}'/>
-
+            android:text='@{question.questionType.condition!=null ? question.questionType.condition.ifPositive.question:" "}'
+         />
+        <!--android:visibility="@{question.questionType.condition!=null? View.VISIBLE : View.GONE}"-->
         <LinearLayout
             android:id="@+id/rangecontent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:orientation="horizontal"
-            android:visibility="@{question.questionType.condition!=null ? View.VISIBLE : View.GONE}"
+            android:visibility="@{question.questionType.condition!=null  ? View.VISIBLE : View.GONE}"
 
             >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="From" />
+                android:text='@{question.questionType.condition!=null?"From "+question.questionType.condition.ifPositive.questionType.range.from : " "}'
 
-            <NumberPicker
+                />
+
+            <EditText
                 android:id="@+id/fromRange"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -110,14 +112,16 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
-                />
+                android:inputType="number"
+
+              />
             <!--android:value='@{question.questionType.condition!=null?Integer.toString(ampquestion.questionType.condition.ifPositive.questionType.range.from):" "'-->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="To" />
+                android:text='@{question.questionType.condition!=null?"To "+question.questionType.condition.ifPositive.questionType.range.to : " "}' />
 
-            <NumberPicker
+            <EditText
                 android:id="@+id/toRange"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -125,8 +129,11 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
+                android:inputType="number"
+
                 />
-            <!--android:value='@{question.questionType.condition!=null?Integer.toString(ampquestion.questionType.condition.ifPositive.questionType.range.to):" "'-->
+
+
         </LinearLayout>
     </LinearLayout>
 
