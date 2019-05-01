@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -55,21 +56,15 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Personality Test");
         mainActivityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        if(!connected){
 
-            binding.progressBar.setVisibility(View.GONE);
-            binding.infoPortion.setVisibility(View.VISIBLE);
-            binding.infoPortion.setText("Please connect internet to proceed!!");
-           // binding.progressBar.setVisibility(View.GONE);
-        }
         mainActivityViewModel.hasInternetConnection().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                Toast.makeText(MainActivity.this, s, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, s, Toast.LENGTH_SHORT).show();
                 binding.infoPortion.setVisibility(View.GONE);
                 connected =true;
-                    loadData();
 
+                loadData();
             }
         });
 
@@ -139,9 +134,12 @@ public class MainActivity extends AppCompatActivity {
     private void loadRecyclerView(ArrayList<Question> arrayList) {
 
         recyclerView = binding.rvQuestionList;
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager manager = new LinearLayoutManager(this);
+        manager.setOrientation(RecyclerView.VERTICAL);
+        recyclerView.setLayoutManager(manager);
         adapter = new QuestionsAdapter(arrayList, this);
         recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
         loadCount++;
 
     }
@@ -175,12 +173,12 @@ public class MainActivity extends AppCompatActivity {
                 }
             } else {
 
-                Toast.makeText(this, "Please give all answers to proceed!!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Please connect internet to proceed!!", Toast.LENGTH_SHORT).show();
             }
         }
         else {
+            Toast.makeText(this, "Please give all answers to proceed!!", Toast.LENGTH_SHORT).show();
 
-            Toast.makeText(this, "Please connect internet to proceed!!", Toast.LENGTH_SHORT).show();
         }
 
         return super.onOptionsItemSelected(item);
@@ -190,9 +188,9 @@ public class MainActivity extends AppCompatActivity {
 
         if (loadCount < categoryList.size()) {
             answerLists.add(QuestionsAdapter.answerList);
-            //  Log.i(TAG, "size is " + answerLists.get(0).get(3).getAnswer());
+              Log.i(TAG, "size is " + answerLists.get(0).get(2).getAnswer());
             loadRecyclerView(questionList.get(loadCount));
-            adapter.notifyDataSetChanged();
+           // adapter.notifyDataSetChanged();
 
 
         } else {
@@ -208,11 +206,12 @@ public class MainActivity extends AppCompatActivity {
             mainActivityViewModel.pulishResult(finalAnswers).observe(this, new Observer<String>() {
                 @Override
                 public void onChanged(String s) {
-                    //Toast.makeText(MainActivity.this, s, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, s, Toast.LENGTH_SHORT).show();
 
                     Intent intent = new Intent(MainActivity.this, SuccessActivity.class);
-                    intent.putExtra("message", s);
+                   // intent.putExtra("message", s);
                     startActivity(intent);
+                    finish();
 
 
                 }

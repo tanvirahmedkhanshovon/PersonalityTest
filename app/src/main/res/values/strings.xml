@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">PersonalityTest</string>
     <string name="title_activity_success">SuccessActivity</string>
+    <string name="intenet_message">No Internet Connection!!!</string>
 </resources>

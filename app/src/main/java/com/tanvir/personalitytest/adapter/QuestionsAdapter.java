@@ -9,12 +9,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.radiobutton.MaterialRadioButton;
 import com.tanvir.personalitytest.R;
 import com.tanvir.personalitytest.databinding.QuestionsItemBinding;
 import com.tanvir.personalitytest.model.Answers;
@@ -29,6 +31,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Ques
     public static ArrayList<Answers> answerList;
     private ArrayList<Question> questionArrayList;
     private Context context;
+
 
     public ArrayList<Answers> getAnswerList() {
         return answerList;
@@ -59,138 +62,142 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Ques
         holder.binding.setQuestion(question);
         // holder.binding.setRadioButton(radioButtonClickHandler);
         final Answers answers = new Answers();
-        holder.binding.rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
+        if(holder.binding.rg.getCheckedRadioButtonId()==-1) {
+            holder.binding.rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                    String answer = "";
+                    String question = questionArrayList.get(position).getQuestion();
+                    switch (checkedId) {
+                        case R.id.opt1:
+
+                            answer = questionArrayList.get(position).getQuestionType().getOptions().get(0);
+                            Log.i(TAG, answer);
+                            //radioChecked = true;
+                            holder.binding.conditionalItems.setVisibility(View.GONE);
+                            hasrange = false;
+                            break;
+                        case R.id.opt2:
+                            answer = questionArrayList.get(position).getQuestionType().getOptions().get(1);
+                            holder.binding.conditionalItems.setVisibility(View.GONE);
+                            hasrange = false;
+
+                            //radioChecked = true;
+                            break;
+                        case R.id.opt3:
+                            answer = questionArrayList.get(position).getQuestionType().getOptions().get(2);
+                            if (questionArrayList.get(position).getQuestionType().getCondition() != null) {
 
 
-                String answer = "";
-                String question = questionArrayList.get(position).getQuestion();
-                switch (checkedId) {
-                    case R.id.opt1:
+                                holder.binding.conditionalItems.setVisibility(View.VISIBLE);
 
-                        answer = questionArrayList.get(position).getQuestionType().getOptions().get(0);
-                        Log.i(TAG, answer);
-                        //radioChecked = true;
-                        holder.binding.conditionalItems.setVisibility(View.GONE);
-                        hasrange = false;
-                        break;
-                    case R.id.opt2:
-                        answer = questionArrayList.get(position).getQuestionType().getOptions().get(1);
-                        holder.binding.conditionalItems.setVisibility(View.GONE);
-                        hasrange = false;
-                        //radioChecked = true;
-                        break;
-                    case R.id.opt3:
-                        answer = questionArrayList.get(position).getQuestionType().getOptions().get(2);
-                        if (questionArrayList.get(position).getQuestionType().getCondition() != null) {
+                                hasrange = true;
+                                holder.binding.fromRange.addTextChangedListener(new TextWatcher() {
+                                    @Override
+                                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-
-                            holder.binding.conditionalItems.setVisibility(View.VISIBLE);
-
-                            hasrange = true;
-                            holder.binding.fromRange.addTextChangedListener(new TextWatcher() {
-                                @Override
-                                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                                }
-
-                                @Override
-                                public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                                    if (Integer.parseInt(s.toString()) >= questionArrayList.get(position).getQuestionType().getCondition().getIfPositive().getQuestionType().getRange().getFrom()) {
-                                        min = true;
-                                        answers.setAgeMin(Integer.parseInt(s.toString()));
                                     }
 
+                                    @Override
+                                    public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                                }
+                                        if (Integer.parseInt(s.toString()) >= questionArrayList.get(position).getQuestionType().getCondition().getIfPositive().getQuestionType().getRange().getFrom()) {
+                                            min = true;
+                                            answers.setAgeMin(Integer.parseInt(s.toString()));
+                                        }
 
-                                @Override
-                                public void afterTextChanged(Editable s) {
 
-                                }
-                            });
-                            holder.binding.toRange.addTextChangedListener(new TextWatcher() {
-                                @Override
-                                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                                }
-
-                                @Override
-                                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                                    if (Integer.parseInt(s.toString()) <= questionArrayList.get(position).getQuestionType().getCondition().getIfPositive().getQuestionType().getRange().getTo()) {
-                                        max = true;
-                                        answers.setAgeMax(Integer.parseInt(s.toString()));
                                     }
-                                }
 
-                                @Override
-                                public void afterTextChanged(Editable s) {
+                                    @Override
+                                    public void afterTextChanged(Editable s) {
 
-                                }
-                            });
-                        }
-                        break;
-                    case R.id.opt4:
-                        answer = questionArrayList.get(position).getQuestionType().getOptions().get(3);
-                        holder.binding.conditionalItems.setVisibility(View.GONE);
-                        hasrange = false;
-                        //  radioChecked = true;
-                        break;
-                    case R.id.opt5:
-                        answer = questionArrayList.get(position).getQuestionType().getOptions().get(4);
-                        holder.binding.conditionalItems.setVisibility(View.GONE);
-                        hasrange = false;
-                        // radioChecked = true;
-                        break;
+                                    }
+                                });
+                                holder.binding.toRange.addTextChangedListener(new TextWatcher() {
+                                    @Override
+                                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-                    case -1:
-                        answer ="";
-                        Log.i(TAG,"Coming HERE");
+                                    }
+
+                                    @Override
+                                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                                        if (Integer.parseInt(s.toString()) <= questionArrayList.get(position).getQuestionType().getCondition().getIfPositive().getQuestionType().getRange().getTo()) {
+                                            max = true;
+                                            answers.setAgeMax(Integer.parseInt(s.toString()));
+                                        }
+                                    }
+
+                                    @Override
+                                    public void afterTextChanged(Editable s) {
+
+                                    }
+                                });
+                            }
+                            break;
+                        case R.id.opt4:
+                            answer = questionArrayList.get(position).getQuestionType().getOptions().get(3);
+                            holder.binding.conditionalItems.setVisibility(View.GONE);
+                            hasrange = false;
+                            //  radioChecked = true;
+                            break;
+                        case R.id.opt5:
+                            answer = questionArrayList.get(position).getQuestionType().getOptions().get(4);
+                            holder.binding.conditionalItems.setVisibility(View.GONE);
+                            hasrange = false;
+                            // radioChecked = true;
+                            break;
+
+                        default:
+
+                            holder.binding.opt1.setChecked(false);
+                            holder.binding.opt2.setChecked(false);
+                            holder.binding.opt3.setChecked(false);
+                            holder.binding.opt4.setChecked(false);
+                            holder.binding.opt5.setChecked(false);
+
+                            break;
 
 
-                        break;
+                    }
 
 
-                }
-
-
-
-
-                if (answer.matches(" ")) {
-                    Log.i(TAG,"Coming HERE");
+                    if (answer.matches(" ")) {
+                        Log.i(TAG, "Coming HERE");
 ////                    radioChecked = false;
 //                    answers.setAnswer("");
 //                    answers.setQuestion(question);
 
-                } else {
-
-
-                    //radioChecked = true;
-
-                    answers.setAnswer(answer);
-                    answers.setQuestion(question);
-
-                    if (position >= answerList.size()) {
-                        //index not exists
-
-//                        if (position <= answerList.size()) {
-//
-//                            answerList.add(position, answers);
-//                        } else {
-
-                            answerList.add(answers);
-                     //   }
                     } else {
-                        // index exists
 
-                        answerList.set(position, answers);
+
+                        //radioChecked = true;
+
+                        answers.setAnswer(answer);
+                        answers.setQuestion(question);
+
+                        if (position >= answerList.size()) {
+                            //index not exists
+                            answerList.add(answers);
+
+                        } else if (position <= answerList.size()) {
+
+
+                            if (answerList.contains(question)) {
+                                answerList.set(position, answers);
+
+                            } else {
+
+                                answerList.add(answers);
+                            }
+
+                        }
+
                     }
                 }
-            }
-        });
-
+            });
+        }
 
     }
 
@@ -213,14 +220,14 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Ques
 
             binding = itemView;
 
-            if (getAdapterPosition() != RecyclerView.NO_POSITION) {
-                if (itemView.rg.getCheckedRadioButtonId()==-1) {
-                    Log.i(TAG,"Coming HERE");
-//                    radioChecked = false;
-
-                }
-
-            }
+//            if (getAdapterPosition() != RecyclerView.NO_POSITION) {
+//                if (itemView.rg.getCheckedRadioButtonId()==-1) {
+//                    Log.i(TAG,"Coming HERE");
+////                    radioChecked = false;
+//
+//                }
+//
+//            }
 
 
 //            if(binding.rg.getCheckedRadioButtonId()!=R.id.opt3){
@@ -246,9 +253,9 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Ques
 //        }
 
 
-        public QuestionsItemBinding getBinding() {
-            return binding;
-        }
+//        public QuestionsItemBinding getBinding() {
+//            return binding;
+//        }
     }
 //
 //    public class RadioButtonClickHandler {
@@ -301,4 +308,8 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Ques
 //    }
 
 
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
 }

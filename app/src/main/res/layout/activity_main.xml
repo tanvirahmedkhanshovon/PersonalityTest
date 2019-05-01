@@ -33,8 +33,8 @@
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimary"
                 android:textColor="#FFFFFF"
-                android:visibility="gone"
-                android:layout_marginBottom="10dp"/>
+                android:text="@string/intenet_message"
+                android:layout_margin="10dp"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvQuestionList"
