@@ -4,15 +4,17 @@
     <data>
 
         <import type="android.view.View" />
+
         <variable
             name="question"
             type="com.tanvir.personalitytest.model.Question" />
 
-
-        <variable
-            name="radioButton"
-            type="com.tanvir.personalitytest.adapter.QuestionsAdapter.RadioButtonClickHandler" />
-
+        <!--<variable-->
+        <!--name="answers"-->
+        <!--type="com.tanvir.personalitytest.model.Answers" />-->
+        <!--<variable-->
+        <!--name="radioButton"-->
+        <!--type="com.tanvir.personalitytest.adapter.QuestionsAdapter.RadioButtonClickHandler" />-->
 
 
     </data>
@@ -30,10 +32,10 @@
             android:text="@{question.question}" />
 
         <RadioGroup
+            android:id="@+id/rg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/rg"
-            android:checkedButton="@id/opt1"
+
 
             >
 
@@ -41,100 +43,120 @@
                 android:id="@+id/opt1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="@{radioButton::onOpt1Clicked}"
                 android:text="@{question.questionType.options.get(0)}"
 
-                />
 
+                />
+            <!--android:onClick="@{radioButton::onOpt1Clicked}"-->
             <com.google.android.material.radiobutton.MaterialRadioButton
                 android:id="@+id/opt2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="@{radioButton::onOpt2Clicked}"
-                android:text="@{question.questionType.options.get(1)}"
-
-                />
+                android:text="@{question.questionType.options.get(1)}" />
+            <!--android:onClick="@{radioButton::onOpt2Clicked}"-->
             <!--android:checked="@{question.questionType.options.equals(question.questionType.options.get(1))}"-->
             <com.google.android.material.radiobutton.MaterialRadioButton
                 android:id="@+id/opt3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="@{radioButton::onOpt3Clicked}"
-                android:text="@{question.questionType.options.get(2)}" />
+                android:text="@{question.questionType.options.get(2)}"
 
+                />
+            <!--android:onClick="@{radioButton::onOpt3Clicked}"-->
             <com.google.android.material.radiobutton.MaterialRadioButton
                 android:id="@+id/opt4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="@{radioButton::onOpt4Clicked}"
                 android:text='@{question.questionType.options.size() == 4 ? question.questionType.options.get(3):""}'
                 android:visibility="@{question.questionType.options.size() == 4 ? View.VISIBLE : View.GONE}" />
+            <!--android:onClick="@{radioButton::onOpt4Clicked}"-->
 
             <com.google.android.material.radiobutton.MaterialRadioButton
                 android:id="@+id/opt5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="@{radioButton::onOpt5Clicked}"
                 android:text='@{question.questionType.options.size() == 5 ? question.questionType.options.get(4):""}'
                 android:visibility="@{question.questionType.options.size() == 5 ? View.VISIBLE : View.GONE}" />
+            <!--android:onClick="@{radioButton::onOpt5Clicked}"-->
         </RadioGroup>
 
 
-        <TextView
-            android:id="@+id/subquestionTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text='@{question.questionType.condition!=null ? question.questionType.condition.ifPositive.question:" "}'
-         />
         <!--android:visibility="@{question.questionType.condition!=null? View.VISIBLE : View.GONE}"-->
         <LinearLayout
-            android:id="@+id/rangecontent"
-            android:layout_width="wrap_content"
+            android:id="@+id/conditionalItems"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal"
-            android:visibility="@{question.questionType.condition!=null  ? View.VISIBLE : View.GONE}"
-
-            >
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/subquestionTitle"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text='@{question.questionType.condition!=null?"From "+question.questionType.condition.ifPositive.questionType.range.from : " "}'
+                android:text='@{question.questionType.condition!=null ? question.questionType.condition.ifPositive.question:" "}' />
 
-                />
-
-            <EditText
-                android:id="@+id/fromRange"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:inputType="number"
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="1"
 
-              />
-            <!--android:value='@{question.questionType.condition!=null?Integer.toString(ampquestion.questionType.condition.ifPositive.questionType.range.from):" "'-->
-            <TextView
-                android:layout_width="wrap_content"
+
+                >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".4"
+                    android:text='@{question.questionType.condition!=null?"From - min "+question.questionType.condition.ifPositive.questionType.range.from : " "}' />
+
+                <EditText
+                    android:id="@+id/fromRange"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight=".6"
+                    android:imeOptions="actionDone"
+                    android:inputType="number"
+                    android:singleLine="true"
+
+                    />
+                <!--android:value='@{question.questionType.condition!=null?Integer.toString(ampquestion.questionType.condition.ifPositive.questionType.range.from):" "'-->
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text='@{question.questionType.condition!=null?"To "+question.questionType.condition.ifPositive.questionType.range.to : " "}' />
+                android:orientation="horizontal"
+                android:weightSum="1">
 
-            <EditText
-                android:id="@+id/toRange"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:inputType="number"
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".4"
+                    android:text='@{question.questionType.condition!=null?"To - max "+question.questionType.condition.ifPositive.questionType.range.to : " "}' />
 
-                />
-
-
+                <EditText
+                    android:id="@+id/toRange"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight=".6"
+                    android:imeOptions="actionDone"
+                    android:inputType="number"
+                    android:singleLine="true" />
+            </LinearLayout>
         </LinearLayout>
+
     </LinearLayout>
 
 </layout>

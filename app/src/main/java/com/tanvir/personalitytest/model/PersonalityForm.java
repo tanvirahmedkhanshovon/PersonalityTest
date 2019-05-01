@@ -50,7 +50,7 @@ public class PersonalityForm implements Parcelable
         this.categories = categories;
     }
 
-    public List<Question> getQuestions() {
+    public List<Question> getQuestions()  {
         return questions;
     }
 

@@ -2,9 +2,14 @@ package com.tanvir.personalitytest.adapter;
 
 import android.content.Context;
 import android.icu.lang.UCharacter;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -21,12 +26,20 @@ import java.util.ArrayList;
 public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.QuestionViewHolder> {
 
     private static final String TAG = "QuestionsAdapter";
-    public static ArrayList<Answers> answerList = new ArrayList<>();
+    public static ArrayList<Answers> answerList;
     private ArrayList<Question> questionArrayList;
     private Context context;
 
+    public ArrayList<Answers> getAnswerList() {
+        return answerList;
+    }
+
+    public static boolean hasrange, min, max;
+
+
     public QuestionsAdapter(ArrayList<Question> questionArrayList, Context context) {
         this.questionArrayList = questionArrayList;
+        answerList = new ArrayList<>(questionArrayList.size());
         this.context = context;
     }
 
@@ -40,11 +53,145 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Ques
 
 
     @Override
-    public void onBindViewHolder(@NonNull QuestionViewHolder holder, int position) {
-        RadioButtonClickHandler radioButtonClickHandler = new RadioButtonClickHandler(position);
+    public void onBindViewHolder(@NonNull final QuestionViewHolder holder, final int position) {
+        // RadioButtonClickHandler radioButtonClickHandler = new RadioButtonClickHandler(position);
         Question question = questionArrayList.get(position);
         holder.binding.setQuestion(question);
-        holder.binding.setRadioButton(radioButtonClickHandler);
+        // holder.binding.setRadioButton(radioButtonClickHandler);
+        final Answers answers = new Answers();
+        holder.binding.rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+
+                String answer = "";
+                String question = questionArrayList.get(position).getQuestion();
+                switch (checkedId) {
+                    case R.id.opt1:
+
+                        answer = questionArrayList.get(position).getQuestionType().getOptions().get(0);
+                        Log.i(TAG, answer);
+                        //radioChecked = true;
+                        holder.binding.conditionalItems.setVisibility(View.GONE);
+                        hasrange = false;
+                        break;
+                    case R.id.opt2:
+                        answer = questionArrayList.get(position).getQuestionType().getOptions().get(1);
+                        holder.binding.conditionalItems.setVisibility(View.GONE);
+                        hasrange = false;
+                        //radioChecked = true;
+                        break;
+                    case R.id.opt3:
+                        answer = questionArrayList.get(position).getQuestionType().getOptions().get(2);
+                        if (questionArrayList.get(position).getQuestionType().getCondition() != null) {
+
+
+                            holder.binding.conditionalItems.setVisibility(View.VISIBLE);
+
+                            hasrange = true;
+                            holder.binding.fromRange.addTextChangedListener(new TextWatcher() {
+                                @Override
+                                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                                }
+
+                                @Override
+                                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                                    if (Integer.parseInt(s.toString()) >= questionArrayList.get(position).getQuestionType().getCondition().getIfPositive().getQuestionType().getRange().getFrom()) {
+                                        min = true;
+                                        answers.setAgeMin(Integer.parseInt(s.toString()));
+                                    }
+
+
+                                }
+
+                                @Override
+                                public void afterTextChanged(Editable s) {
+
+                                }
+                            });
+                            holder.binding.toRange.addTextChangedListener(new TextWatcher() {
+                                @Override
+                                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                                }
+
+                                @Override
+                                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                                    if (Integer.parseInt(s.toString()) <= questionArrayList.get(position).getQuestionType().getCondition().getIfPositive().getQuestionType().getRange().getTo()) {
+                                        max = true;
+                                        answers.setAgeMax(Integer.parseInt(s.toString()));
+                                    }
+                                }
+
+                                @Override
+                                public void afterTextChanged(Editable s) {
+
+                                }
+                            });
+                        }
+                        break;
+                    case R.id.opt4:
+                        answer = questionArrayList.get(position).getQuestionType().getOptions().get(3);
+                        holder.binding.conditionalItems.setVisibility(View.GONE);
+                        hasrange = false;
+                        //  radioChecked = true;
+                        break;
+                    case R.id.opt5:
+                        answer = questionArrayList.get(position).getQuestionType().getOptions().get(4);
+                        holder.binding.conditionalItems.setVisibility(View.GONE);
+                        hasrange = false;
+                        // radioChecked = true;
+                        break;
+
+                    case -1:
+                        answer ="";
+                        Log.i(TAG,"Coming HERE");
+
+
+                        break;
+
+
+                }
+
+
+
+
+                if (answer.matches(" ")) {
+                    Log.i(TAG,"Coming HERE");
+////                    radioChecked = false;
+//                    answers.setAnswer("");
+//                    answers.setQuestion(question);
+
+                } else {
+
+
+                    //radioChecked = true;
+
+                    answers.setAnswer(answer);
+                    answers.setQuestion(question);
+
+                    if (position >= answerList.size()) {
+                        //index not exists
+
+//                        if (position <= answerList.size()) {
+//
+//                            answerList.add(position, answers);
+//                        } else {
+
+                            answerList.add(answers);
+                     //   }
+                    } else {
+                        // index exists
+
+                        answerList.set(position, answers);
+                    }
+                }
+            }
+        });
+
+
     }
 
 
@@ -63,7 +210,19 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Ques
 
         public QuestionViewHolder(@NonNull QuestionsItemBinding itemView) {
             super(itemView.getRoot());
+
             binding = itemView;
+
+            if (getAdapterPosition() != RecyclerView.NO_POSITION) {
+                if (itemView.rg.getCheckedRadioButtonId()==-1) {
+                    Log.i(TAG,"Coming HERE");
+//                    radioChecked = false;
+
+                }
+
+            }
+
+
 //            if(binding.rg.getCheckedRadioButtonId()!=R.id.opt3){
 //                if(questionArrayList.get(getAdapterPosition()).getQuestionType().getCondition()!=null) {
 //
@@ -80,56 +239,66 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Ques
 //            }
 
         }
-    }
 
-    public class RadioButtonClickHandler {
-        private int position;
-        private String question;
-        private String answer;
-
-
-        public RadioButtonClickHandler(int position) {
-            this.position = position;
-
-            question = questionArrayList.get(position).getQuestion();
-        }
-
-        public void onOpt1Clicked(View v) {
-            answer = questionArrayList.get(position).getQuestionType().getOptions().get(0);
-
-            answerList.add(new Answers(question, answer));
+//        public void bind(Answers answers) {
+//
+//            this.binding.setAnswers(answers);
+//        }
 
 
-        }
-
-        public void onOpt2Clicked(View v) {
-
-            answer = questionArrayList.get(position).getQuestionType().getOptions().get(1);
-
-            answerList.add(new Answers(question, answer));
-
-        }
-
-        public void onOpt3Clicked(View v) {
-
-            answer = questionArrayList.get(position).getQuestionType().getOptions().get(2);
-
-            answerList.add(new Answers(question, answer));
-
-        }
-
-        public void onOpt4Clicked(View v) {
-            answer = questionArrayList.get(position).getQuestionType().getOptions().get(3);
-
-            answerList.add(new Answers(question, answer));
-        }
-
-        public void onOpt5Clicked(View v) {
-            answer = questionArrayList.get(position).getQuestionType().getOptions().get(4);
-
-            answerList.add(new Answers(question, answer));
+        public QuestionsItemBinding getBinding() {
+            return binding;
         }
     }
+//
+//    public class RadioButtonClickHandler {
+//        private int position;
+//        private String question;
+//        private String answer;
+//
+//
+//        public RadioButtonClickHandler(int position) {
+//            this.position = position;
+//
+//            //   question = questionArrayList.get(position).getQuestion();
+//        }
+//
+//        public void onOpt1Clicked(View v) {
+//            //   answer = questionArrayList.get(position).getQuestionType().getOptions().get(0);
+//            // radioChecked = true;
+//            // answerList.add(new Answers(question, answer));
+//
+//
+//        }
+//
+//        public void onOpt2Clicked(View v) {
+//
+//            //  answer = questionArrayList.get(position).getQuestionType().getOptions().get(1);
+//            // radioChecked = true;
+//            //  answerList.add(new Answers(question, answer));
+//
+//        }
+//
+//        public void onOpt3Clicked(View v) {
+//
+//            //    answer = questionArrayList.get(position).getQuestionType().getOptions().get(2);
+//            //   radioChecked = true;
+//            //  answerList.add(new Answers(question, answer));
+//
+//        }
+//
+//        public void onOpt4Clicked(View v) {
+//            //      answer = questionArrayList.get(position).getQuestionType().getOptions().get(3);
+//            //   radioChecked = true;
+//            //   answerList.add(new Answers(question, answer));
+//        }
+//
+//        public void onOpt5Clicked(View v) {
+//            //  answer = questionArrayList.get(position).getQuestionType().getOptions().get(4);
+//            // radioChecked = true;
+//            // answerList.add(new Answers(question, answer));
+//        }
+//    }
 
 
 }
