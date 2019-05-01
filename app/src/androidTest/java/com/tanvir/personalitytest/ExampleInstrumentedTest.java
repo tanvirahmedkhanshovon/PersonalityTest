@@ -1,16 +1,21 @@
 package com.tanvir.personalitytest;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.test.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
 
+import com.tanvir.personalitytest.model.Answers;
 import com.tanvir.personalitytest.model.PersonalityForm;
+import com.tanvir.personalitytest.model.PublishResult;
 import com.tanvir.personalitytest.service.PersonalityTestService;
 import com.tanvir.personalitytest.service.RetrofitInstance;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -78,6 +83,43 @@ public class ExampleInstrumentedTest {
     @Test
     public void testPostResponse(){
 
+        PersonalityTestService service = RetrofitInstance.getService();
+        ArrayList<Answers> answerList = new ArrayList<>();
+        Answers answers = new Answers();
 
+        answers.setQuestion("DO YOU GO OUT?");
+        answers.setAnswer("YES");
+        answerList.add(answers);
+        answers.setQuestion("DO YOU LIKE SPORTS?");
+        answers.setAnswer("YES");
+        answerList.add(answers);
+
+
+        Call<PublishResult> call = service.publishResut(answerList);
+
+        call.enqueue(new Callback<PublishResult>() {
+            @Override
+            public void onResponse(Call<PublishResult> call, Response<PublishResult> response) {
+
+
+                try {
+
+
+                    PublishResult value = response.body();
+                   assertEquals("Published!",value.getStatus());
+
+                } catch (Exception e) {
+
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<PublishResult> call, Throwable t) {
+
+
+            }
+        });
     }
 }
